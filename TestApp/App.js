@@ -3,15 +3,8 @@
  * @flow strict-local
  */
 
-import React ,{useState,useEffect} from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
   Button
 } from 'react-native';
 

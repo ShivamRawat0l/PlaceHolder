@@ -1,63 +1,73 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  FlatList,
-  TouchableOpacity
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    TouchableOpacity
 } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
-function HomeScreen(props){
-    const [posts , setPosts ]= useState([]); 
-    const [users , setUsers ]= useState({}); 
-    useEffect(()=>{
+function HomeScreen(props) {
+    const [posts, setPosts] = useState([]);
+    const [users, setUsers] = useState({});
+    useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(blob=>blob.json())
-            .then(data=>{
-                setPosts(data); 
+            .then(blob => blob.json())
+            .then(data => {
+                setPosts(data);
             })
         fetch('https://jsonplaceholder.typicode.com/users')
-            .then(blob=>blob.json())
-            .then(data=>{
-                var userDictionary = {}; 
-                 data.forEach(user=>{
-                    userDictionary[user.id]=user.name;   
+            .then(blob => blob.json())
+            .then(data => {
+                var userDictionary = {};
+                data.forEach(user => {
+                    userDictionary[user.id] = user.name;
                 })
                 setUsers(userDictionary);
             })
-    },[]);
+    }, []);
 
-    const renderItem=  ({item})=>{
-        return <View style={{padding:10,borderColor:'#000',borderRadius:2,margin:10,borderWidth:2}}>
-            <TouchableOpacity onPress={()=>{
-                props.navigation.navigate("Post",{postId: item.id});
+    const renderItem = ({ item }) => {
+        return <View style={styles.postBorder}>
+            <TouchableOpacity onPress={() => {
+                props.navigation.navigate("Post", { postId: item.id, username: users[item.userId],userId: item.userId });
             }}>
-            <Text style={{fontSize:20}}>{item.title}</Text>
+                <Text style={styles.title}>{item.title}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{
-                props.navigation.navigate("Users",{userId: item.userId});
+            <TouchableOpacity onPress={() => {
+                props.navigation.navigate("Users", { userId: item.userId });
             }}>
-            <Text style={{fontSize:15,justifyContent:'flex-end',alignSelf:'flex-end',paddingTop:30}}>{users[item.userId]}</Text>
+                <Text style={styles.username}>{users[item.userId]}</Text>
             </TouchableOpacity>
         </View>
     }
 
-  return (
-    <View>
-        <FlatList
-        data={posts}
-        renderItem={renderItem}
-        keyExtractor={item=>item.id}
-        />
-    </View>
-  );
+    return (
+        <View>
+            <FlatList
+                data={posts}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+            />
+        </View>
+    );
 };
-
+var styles = StyleSheet.create({
+    postBorder: { 
+        padding: 10,
+        borderColor: '#000', 
+        borderRadius: 10, 
+        margin: 10, 
+        borderWidth: 2 
+    },
+    username: { 
+        fontSize: 15, 
+        justifyContent: 'flex-end', 
+        alignSelf: 'flex-end', 
+        paddingTop: 30 
+    },
+    title: { 
+        fontSize: 20 
+    },
+})
 export default HomeScreen;

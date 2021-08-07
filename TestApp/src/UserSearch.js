@@ -1,20 +1,12 @@
 import React, { useEffect ,useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
   FlatList,
   TextInput
 } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ScreenStackHeaderSearchBarView } from 'react-native-screens';
-const Stack = createNativeStackNavigator();
 function UserScreen(props){
 
     const [user , setUser ]= useState([]); 
@@ -33,21 +25,21 @@ function UserScreen(props){
     },[]);
 
     const renderItem=  ({item})=>{
-        return <View style={{padding:10,borderColor:'#000',borderRadius:2,margin:10,borderWidth:2}}>
-                <Text style={{fontSize:20}}>{item}</Text>
+        return <View style={styles.namesView}>
+                <Text style={styles.names}>{item}</Text>
         </View>
     }
 
   return (
     <View>
-        <TextInput placeholder={"Search user by name"} onChangeText={(value)=>{
-            console.log(value)
+        <TextInput  underlineColorAndroid={'black'} placeholder={"Search user by name"} onChangeText={(value)=>{
             var filteredUser= user.filter(data=>{
                 var lower= data.toLowerCase();
                return (lower.search(value.toLowerCase())!=-1)
             })
             setSearch(filteredUser);
         }} style={{fontSize:20,padding:10, margin:15}}></TextInput>
+
         <FlatList
         data={search}
         renderItem={renderItem}
@@ -56,5 +48,17 @@ function UserScreen(props){
     </View>
   );
 };
-
+var styles= StyleSheet.create({
+    namesView: {
+        padding:10,
+        borderColor:'#000',
+        borderRadius:10,
+        margin:10,
+        borderWidth:4
+    },
+    names:{
+        fontSize:20,
+        fontWeight:'700'
+    },
+})
 export default UserScreen;

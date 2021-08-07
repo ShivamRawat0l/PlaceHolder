@@ -1,18 +1,11 @@
 import React, { useEffect ,useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
   FlatList
 } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
 function UserScreen({route, navigation}){
 
     const {userId} = route.params;
@@ -26,17 +19,21 @@ function UserScreen({route, navigation}){
     },[]);
 
     const renderItem=  ({item})=>{
-        return <View style={{padding:10,borderColor:'#000',borderRadius:2,margin:10,borderWidth:2}}>
-            <Text style={{fontSize:20}}>{item.name}</Text>
-            <Text style={{fontSize:20}}>{item.username}</Text>
-            <Text style={{fontSize:20}}>{item.email}</Text>
-            <Text style={{fontSize:20}}>{item.website}</Text>
+        return <View style={styles.userView}>
+            <Text style={styles.heading}>Full Name</Text>
+            <Text style={styles.detail}>• {item.name}</Text>
+            <Text style={styles.heading}>User Name</Text>
+            <Text style={styles.detail}>• {item.username}</Text>
+            <Text style={styles.heading}>Email</Text>
+            <Text style={styles.detail}>• {item.email}</Text>
+            <Text style={styles.heading}>Website</Text>
+            <Text style={styles.detail}>• {item.website}</Text>
             <View>
-            <Text style={{fontSize:20}}>{item.company.name}</Text>
-            <Text style={{fontSize:20}}>{item.company.catchPhrase}</Text>
-            <Text style={{fontSize:20}}>{item.company.bs}</Text>
+            <Text style={styles.heading}>Company</Text>
+            <Text style={styles.detail}>• {item.company.name}</Text>
+            <Text style={styles.detail}>• {item.company.catchPhrase}</Text>
+            <Text style={styles.detail}>• {item.company.bs}</Text>
             </View>
-            <Text style={{fontSize:20}}>{item.name}</Text>
         </View>
     }
 
@@ -50,5 +47,24 @@ function UserScreen({route, navigation}){
     </View>
   );
 };
-
+var styles= StyleSheet.create({
+    heading: {
+        fontSize:20,
+        fontWeight:'700',
+        marginVertical:10,
+        paddingLeft:2
+    },
+    detail : {
+        fontSize:18,
+        paddingLeft:20,
+        margin:4
+    },
+    userView:{
+        padding:10,
+        borderColor:'#000',
+        borderRadius:10,
+        margin:10,
+        borderWidth:2
+    }
+})
 export default UserScreen;
